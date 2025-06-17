@@ -7,7 +7,7 @@ echo $LATEST_DOWNLOAD_URL
 mkdir temp
 cd temp
 curl -s -k $LATEST_DOWNLOAD_URL -o alist.tar.gz
-tar -zx alist.tar.gz alist_extract
+tar -xzf alist.tar.gz -C $(pwd)/alist_extract
 alist_bin_path=$(pwd)/alist_extract/alist
 upx -9 ${alist_bin_path} -o alist_${LATEST_VERSION}_aarch64_upx
 mv alist_${LATEST_VERSION}_aarch64_upx ../bin/alist
