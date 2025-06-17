@@ -78,7 +78,7 @@ echo "AList 归档文件已解压。"
 # `head -n 1 | cut -d/ -f1` 尝试获取解压后的第一个顶层目录名。
 EXTRACTED_DIR=$(tar -tf "${ALIST_TAR_GZ_FILE}" | head -n 1 | cut -d/ -f1)
 # 构建 alist 二进制文件的完整源路径
-ALIST_BIN_SOURCE_PATH="${EXTRACTED_DIR}/alist"
+ALIST_BIN_SOURCE_PATH="alist"
 
 # 再次检查 alist 二进制文件是否存在于预期的路径
 if [ ! -f "${ALIST_BIN_SOURCE_PATH}" ]; then
