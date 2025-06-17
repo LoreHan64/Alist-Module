@@ -4,7 +4,7 @@ echo "--- 开始执行 build.sh 脚本 ---"
 # 这里硬编码了 AList 二进制文件的下载 URL。
 # 请务必确保这个 URL 是最新的、有效的，并且指向的是一个可下载的 .tar.gz 文件。
 # 如果未来 AList 的下载链接有变化，您需要手动更新此变量。
-ALIST_DOWNLOAD_URL="https://github.com/AlliotTech/openalist/releases/download/beta/alist-linux-arm64.tar.gz"
+ALIST_DOWNLOAD_URL="https://github.com/AlliotTech/openalist/releases/download/beta/alist-android-arm64.tar.gz"
 
 # 关于 LATEST_VERSION：
 # 你的原始脚本在获取 LATEST_VERSION 时遇到了问题。
