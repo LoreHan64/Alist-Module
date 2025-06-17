@@ -17,7 +17,7 @@ jobs:
         chmod +x build.sh
     - name: run srcipt
       run: |
-        bash build.sh
+        bash build.sh ${{ github.ref_name }}
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
