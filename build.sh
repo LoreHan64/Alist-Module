@@ -58,33 +58,29 @@ if [ $? -ne 0 ]; then
 fi
 echo "AList 二进制文件已下载到 ${ALIST_TAR_GZ_FILE}。"
 
-
 # --- 5. 验证并解压 .tar.gz 文件 ---
 echo "--- 正在验证并解压 AList 归档文件 ---"
 # 首先，验证下载的文件是否是有效的 tar 归档。
-# `tar -tf` 尝试列出归档内容，但实际不解压。`&>/dev/null` 将所有输出重定向到空，只关注退出状态。
 if ! tar -tf "${ALIST_TAR_GZ_FILE}" &>/dev/null; then
     echo "错误：下载的文件 '${ALIST_TAR_GZ_FILE}' 不是一个有效的 tar 归档文件或已损坏。"
     exit 1
 fi
 
-# 解压文件。`tar -zxvf` 会解压 .tar.gz 文件，通常会创建一个顶层目录（例如 alist-linux-arm64/）。
+# 解压文件。根据之前的错误，alist 可执行文件会直接解压到当前目录 (temp/)。
+# 移除 -v，因为有时会导致不必要的日志。
 tar -zxvf "${ALIST_TAR_GZ_FILE}"
 echo "AList 归档文件已解压。"
 
 # 查找解压后的 alist 可执行文件路径。
-# 我们假设解压后的归档包含一个顶层目录，并且 alist 二进制文件在该目录下。
-# 例如：alist-linux-arm64.tar.gz 解压后可能得到 alist-linux-arm64/alist
-# `head -n 1 | cut -d/ -f1` 尝试获取解压后的第一个顶层目录名。
-EXTRACTED_DIR=$(tar -tf "${ALIST_TAR_GZ_FILE}" | head -n 1 | cut -d/ -f1)
-# 构建 alist 二进制文件的完整源路径
-ALIST_BIN_SOURCE_PATH="alist"
+# 根据最新的错误信息，alist 可执行文件在解压后就直接在当前目录 (temp/) 下。
+# 移除动态获取 EXTRACTED_DIR 的逻辑，直接指定 alist 文件的路径。
+ALIST_BIN_SOURCE_PATH="./alist" # <--- 核心修改点：直接指向当前目录下的 'alist' 文件
 
-# 再次检查 alist 二进制文件是否存在于预期的路径
+# 检查 alist 二进制文件是否存在于预期的路径
 if [ ! -f "${ALIST_BIN_SOURCE_PATH}" ]; then
     echo "错误：在解压后，未在预期路径 ${ALIST_BIN_SOURCE_PATH} 找到 AList 可执行文件。"
-    echo "解压目录 (${EXTRACTED_DIR}) 的内容如下："
-    ls -l "${EXTRACTED_DIR}/" # 打印目录内容以帮助调试
+    echo "当前目录 ($(pwd)) 的内容如下：" # 打印当前目录内容以帮助调试
+    ls -l . # 列出当前目录的内容
     exit 1
 fi
 echo "已找到 AList 可执行文件在: ${ALIST_BIN_SOURCE_PATH}"
